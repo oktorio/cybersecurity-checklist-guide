@@ -2,8 +2,8 @@
 
 Updated with SEOJK 29/2022 requirements.
 
-| Domain                           | Question (English)                                                                                                         | Question (Bahasa Indonesia)                                                                                                                 | References                                |
-|:---------------------------------|:---------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------|
+| Domain | Question (English) | Question (Bahasa Indonesia) | References |
+|:-------|:--------------------|:-----------------------------|:-----------|
 | Identify                         | How does the auditee classify critical assets (core systems, digital services, sensitive data)?                            | Bagaimana auditee mengklasifikasikan aset kritikal (sistem inti, layanan digital, data sensitif)?                                           | NIST CSF ID.AM, ISO 27001 A.5.9           |
 | Identify                         | Does the auditee maintain a cyber risk register reported to the Board/Commissioners?                                       | Apakah auditee memiliki cyber risk register yang dilaporkan ke Direksi/Komisaris?                                                           | NIST CSF ID.RA, FFIEC CAT                 |
 | Identify                         | How is third-party risk (cloud, fintech partner) mapped and monitored?                                                     | Bagaimana pemetaan dan pemantauan risiko pihak ketiga (cloud, fintech partner)?                                                             | NIST ID.SC, MAS TRM, SEOJK 29/2022        |
