@@ -1,11 +1,40 @@
-# References for Checklist (v2)
+# Regulatory & Framework References — Cybersecurity Checklist v3
 
-- **SEOJK 29/SEOJK.03/2022**: Cyber Resilience & Security  
-- **NIST CSF v1.1**  
-- **ISO/IEC 27001:2022**  
-- **FFIEC Cybersecurity Assessment Tool**  
-- **MAS TRM 2021**  
-- **Basel Principles for Operational Resilience (2021)**  
-- **CISA Ransomware Guide (2020)**  
-- **NIST SP 800-228 (2025)**: API Protection  
-- **SIFMA Insider Threat Best Practices Guide (2024)**  
+**Reviewed as of 15 August 2026.**
+
+The table separates **current primary Indonesian requirements**, **conditional Bank Indonesia/payment-system overlays**, **international frameworks**, and **legacy references**.
+
+| Status | Regulation / Framework | Scope / Use | Notes | Official / Primary Source |
+|---|---|---|---|---|
+| CURRENT / PRIMARY | PADK OJK No. 1 Tahun 2026 — Penyelenggaraan Teknologi Informasi oleh Bank Umum | Primary IT-governance and IT-risk baseline for all commercial banks; effective 1 Mar 2026. Covers IT governance, architecture/strategic plan, IT risk and information/network security, IT service providers, overseas processing, data/PDP, internal audit and reporting. | Repeals SEOJK 21/SEOJK.03/2017. | https://ojk.go.id/id/regulasi/Pages/PADK-1-Tahun-2026-Penyelenggaraan-Teknologi-Informasi-oleh-Bank-Umum.aspx |
+| CURRENT / PRIMARY | POJK No. 11/POJK.03/2022 — Penyelenggaraan Teknologi Informasi oleh Bank Umum | Principal OJK regulation underpinning IT implementation by commercial banks. | Use together with PADK OJK No. 1 Tahun 2026. | https://ojk.go.id/id/regulasi/Pages/Penyelenggaraan-Teknologi-Informasi-Oleh-Bank-Umum.aspx |
+| CURRENT / PRIMARY | SEOJK No. 29/SEOJK.03/2022 — Ketahanan dan Keamanan Siber Bagi Bank Umum | Cyber inherent-risk assessment, cyber maturity, protection/detection/response/recovery, cyber testing and OJK incident reporting. | OJK incident notification ≤24 hours; complete cyber incident report ≤5 working days after the incident becomes known. Scenario-based testing report to OJK ≤10 working days after the test report is completed. | https://www.ojk.go.id/id/regulasi/Pages/Ketahanan-dan-Keamanan-Siber-Bagi-Bank-Umum.aspx |
+| CURRENT / PRIMARY | SEOJK No. 24/SEOJK.03/2023 — Penilaian Tingkat Maturitas Digital Bank Umum | Annual digital maturity self-assessment covering governance, architecture, IT risk, cyber, technology, data, collaboration and consumer protection. | Integrate with supervisory scoping and annual maturity review. | https://ojk.go.id/id/regulasi/Pages/Penilaian-Tingkat-Maturitas-Digital-Bank-Umum.aspx |
+| CURRENT / PRIMARY | POJK No. 17 Tahun 2023 — Penerapan Tata Kelola Bagi Bank Umum | Board, governance, risk oversight, internal control and audit overlay. | Use for governance/accountability questions. | https://ojk.go.id/id/regulasi/Pages/Penerapan-Tata-Kelola-Bagi-Bank-Umum.aspx |
+| CURRENT / PRIMARY | POJK No. 21 Tahun 2023 — Layanan Digital oleh Bank Umum | Digital banking/service governance, security, customer authentication, partner and digital-service risk controls. | Apply to relevant digital services and delivery models. | https://ojk.go.id/id/regulasi/Pages/Layanan-Digital-oleh-Bank-Umum.aspx |
+| CURRENT / PRIMARY | POJK No. 22 Tahun 2023 — Pelindungan Konsumen dan Masyarakat di Sektor Jasa Keuangan | Consumer protection, customer communication, complaints, fraud/disruption and digital-service overlays. | Apply where cybersecurity events can affect customers or service delivery. | https://ojk.go.id/id/regulasi/Pages/Pelindungan-Konsumen-dan-Masyarakat-di-Sektor-Jasa-Keuangan.aspx |
+| CURRENT / PRIMARY | UU No. 27 Tahun 2022 — Pelindungan Data Pribadi | Personal-data governance, lawful basis/consent, data-subject rights, processor governance, breach notification and DPO/privacy governance where legally required. | Read with applicable Constitutional Court decisions, including Putusan MK No. 151/PUU-XXII/2024. | https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022 |
+| CONDITIONAL — BI / PAYMENT SYSTEM | PBI No. 2 Tahun 2024 — Keamanan Sistem Informasi dan Ketahanan Siber (KKS) | BI-regulated/payment-system cyber governance, identification, protection, detection, response, recovery, testing and reporting. | Apply based on BI regulatory perimeter/classification. | https://www.bi.go.id/id/publikasi/peraturan/Pages/PBI_022024.aspx |
+| CONDITIONAL — BI / PAYMENT SYSTEM | PADG No. 24 Tahun 2024 — Implementing provisions for KKS | Detailed implementation and reporting for BI cyber-security/resilience requirements. | Apply based on BI regulatory perimeter/classification. | https://www.bi.go.id/id/publikasi/peraturan/Pages/PADG_242024.aspx |
+| CONDITIONAL — BI / PAYMENT SYSTEM | PBI No. 10 Tahun 2025 — Pengaturan Industri Sistem Pembayaran | Payment-system industry structure, risk, infrastructure capability, security and reliability. | Effective 31 Mar 2026; apply to relevant PSP/PJP/PIP/payment-system activities. | https://www.bi.go.id/id/publikasi/peraturan/Pages/PBI_102025.aspx |
+| CONDITIONAL — BI / PAYMENT SYSTEM | PADG No. 32 Tahun 2025 | Implementation of PBI No. 10 Tahun 2025 for the payment-system industry. | Effective 31 Mar 2026; applicability depends on entity/activity. | https://www.bi.go.id/id/publikasi/peraturan/Pages/PADG_322025.aspx |
+| CONDITIONAL — BI-FAST | PADG No. 3 Tahun 2026 — Perubahan Ketiga Penyelenggaraan BI-FAST | BI-FAST participation, supporting providers, operations, TIKMI and strengthened security requirements. | Effective 31 Mar 2026; apply to BI-FAST participants and relevant arrangements. | https://www.bi.go.id/id/publikasi/peraturan/Pages/PADG_032026.aspx |
+| CURRENT / FRAMEWORK | NIST Cybersecurity Framework (CSF) 2.0 | Primary international control taxonomy for v3: Govern, Identify, Protect, Detect, Respond, Recover. | Replaces CSF v1.1 mapping in this toolkit. | https://www.nist.gov/cyberframework |
+| CURRENT / FRAMEWORK | CIS Critical Security Controls v8.1 | Technical safeguards, implementation groups and security-control cross-mapping. | v8.1 aligns mappings with NIST CSF 2.0. | https://www.cisecurity.org/controls/v8-1 |
+| CURRENT / FRAMEWORK | ISO/IEC 27001:2022 / ISO/IEC 27002:2022 | ISMS governance and security-control reference. | Use as supplementary international mapping; licensed standards may require access. | https://www.iso.org/standard/27001 |
+| CURRENT / FRAMEWORK | ISO 22301:2019 | Business continuity and resilience reference. | Used for BCP/DR and recovery controls. | https://www.iso.org/standard/75106.html |
+| CURRENT / FRAMEWORK | Basel Committee — Principles for Operational Resilience (2021) | Operational resilience, critical operations, tolerance for disruption and third-party dependencies. | Supplementary supervisory reference. | https://www.bis.org/bcbs/publ/d516.htm |
+| CURRENT / FRAMEWORK | MAS Technology Risk Management Guidelines (2021) | Regional banking technology-risk benchmark. | Supplementary/non-Indonesian benchmark. | https://www.mas.gov.sg/regulation/guidelines/technology-risk-management-guidelines |
+| CURRENT / FRAMEWORK | NIST SP 800-228 Update 1 — Guidelines for API Protection for Cloud-Native Systems | API inventory, lifecycle, risk categories, controls and runtime protection. | Update 1 includes 2026 updates and API risk/control appendices. | https://csrc.nist.gov/pubs/sp/800/228/upd1/final |
+| CURRENT / FRAMEWORK | NIST SP 800-207 — Zero Trust Architecture | Zero-trust and access-control architecture reference. | Supplementary technical benchmark. | https://csrc.nist.gov/pubs/sp/800/207/final |
+| CURRENT / FRAMEWORK | NIST SP 800-161 Rev.1 — Cybersecurity Supply Chain Risk Management | Third-party and technology supply-chain risk management. | Supplementary technical benchmark. | https://csrc.nist.gov/pubs/sp/800/161/r1/final |
+| LEGACY / DO NOT USE AS CURRENT REQUIREMENT | SEOJK No. 21/SEOJK.03/2017 — Penerapan Manajemen Risiko dalam Penggunaan TI oleh Bank Umum | Historical reference only. | Repealed when PADK OJK No. 1 Tahun 2026 became effective on 1 Mar 2026. | https://ojk.go.id/id/regulasi/Pages/SEOJK-tentang-Penerapan-Manajemen-Risiko-dalam-Penggunaan-Teknologi-Informasi-Oleh-Bank-Umum.aspx |
+| LEGACY / SUPPLEMENTARY | FFIEC Cybersecurity Assessment Tool (CAT) | Historical/legacy benchmarking only. | FFIEC sunset the CAT on 31 Aug 2025 and no longer updates it; do not use as a primary current framework. | https://www.ffiec.gov/cyberassessmenttool.htm |
+
+## Reference hierarchy
+
+For formal supervisory/audit conclusions, prioritize the applicable **Indonesian law/regulation and official OJK/BI implementing provisions**. NIST, CIS, ISO, Basel, MAS and other international sources are used to strengthen control design, testing depth and benchmarking; they do not replace applicable Indonesian requirements.
+
+## Maintenance rule
+
+Before each formal review, check whether any OJK/BI regulation, PADK/PADG, FAQ, reporting instruction, or statutory amendment has changed the obligation, timeline, scope or submission channel.
