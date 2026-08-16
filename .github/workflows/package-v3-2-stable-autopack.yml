@@ -1,0 +1,70 @@
+name: Auto-package v3.2 stable workbook
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/package-v3-2-stable-autopack.yml
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout packaging branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/package-v3-2-stable-final
+          path: current
+          fetch-depth: 0
+
+      - name: Checkout fallback staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/package-v3-2-stable
+          path: fallback
+          fetch-depth: 1
+
+      - name: Reconstruct and validate authoritative workbook
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p current/checklist current/.release/reconstructed
+          : > current/.release/reconstructed/workbook.b64
+          for i in $(seq -w 1 12); do
+            p="part${i}.b64"
+            if [ -f "current/.release/v3_2_parts/${p}" ]; then
+              cat "current/.release/v3_2_parts/${p}" >> current/.release/reconstructed/workbook.b64
+            elif [ -f "fallback/.release/v3_2_parts/${p}" ]; then
+              cat "fallback/.release/v3_2_parts/${p}" >> current/.release/reconstructed/workbook.b64
+            else
+              echo "Missing ${p}" >&2
+              exit 1
+            fi
+          done
+          base64 -d current/.release/reconstructed/workbook.b64 > current/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx
+          actual="$(sha256sum current/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx | awk '{print $1}')"
+          expected="cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e"
+          size="$(stat -c%s current/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx)"
+          echo "sha256=${actual}"
+          echo "size=${size}"
+          test "${actual}" = "${expected}"
+          test "${size}" = "116769"
+
+      - name: Clean staging material
+        shell: bash
+        run: rm -rf current/.release
+
+      - name: Commit packaged workbook
+        shell: bash
+        working-directory: current
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add authoritative v3.2 workbook"
+          git push origin HEAD:agent/package-v3-2-stable-final
