@@ -18,7 +18,7 @@ The 133 controls remain distributed as:
 
 ## New v3.2 operational registers
 
-The authoritative v3.2 Excel working paper adds:
+The QA-generated v3.2 Excel working paper adds:
 
 - **Regulatory Calendar** — recurring and event-driven OJK/BI obligations, validated deadlines, owners, due dates, status, and submission evidence.
 - **Critical Services Map** — service-centric BIA/resilience mapping across applications, data, identity, network, third parties, cloud, recovery arrangements, tests, and open gaps.
@@ -57,12 +57,14 @@ Deadlines that depend on changing technical reporting instructions are explicitl
 
 ## Repository files
 
-- `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx` — **authoritative v3.2 audit/supervisory working paper**.
-- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — stable 133-control source catalogue retained because v3.2 does not inflate the control set.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — stable 133-control source catalogue; v3.2 deliberately does not inflate the control set.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx.sha256` — integrity metadata for the QA-generated v3.2 workbook artifact.
 - `docs/WORKBOOK_v3_2.md` — v3.2 workbook structure and usage.
 - `docs/CHANGELOG_v3_2.md` — v3.1 → v3.2 hardening changes and non-duplication decision.
 - `docs/REFERENCES.md` — current Indonesian regulatory and international framework reference map.
 - `archive/v2/` — historical v2 artifacts.
+
+The QA-generated v3.2 Excel workbook is delivered as an accompanying artifact. The repository tracks its reviewed methodology and cryptographic hash so the binary can be validated without implying that a different workbook is the current release.
 
 ## Recommended workflow
 
