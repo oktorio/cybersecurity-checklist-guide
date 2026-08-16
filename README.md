@@ -1,59 +1,81 @@
-# Cybersecurity Checklist for Auditee (v3.1)
+# Cybersecurity Checklist for Auditee (v3.2)
 
 **Regulatory baseline reviewed as of 16 August 2026.**
 
-Version 3.1 evolves the v3 audit working paper into a more complete **cybersecurity supervisory assessment engine** for commercial-bank cybersecurity, technology-risk, fraud, resilience, and conditional payment-system reviews.
+Version 3.2 is an **operational-hardening release** of the v3.1 supervisory engine. It deliberately keeps the **133 active-control catalogue** stable and improves how the controls are scoped, evidenced, monitored, and followed through during real audit/supervisory fieldwork.
 
-## What changed in v3.1
+## v3.2 principle: deepen, do not duplicate
 
-- **133 active controls** across NIST CSF 2.0 functions: Govern (22), Identify (19), Protect (40), Detect (20), Respond (19), and Recover (13).
-- Added **POJK No. 12 Tahun 2024 — Penerapan Strategi Anti Fraud bagi LJK** and direct fraud-governance/detection/reporting mappings.
-- Updated the **BI-FAST regulatory chain** to PADG 17/2023 as amended by PADG 1/2025, PADG 14/2025, and PADG 3/2026.
-- Added conditional **PBI No. 6 Tahun 2026 — Pelindungan Konsumen Bank Indonesia** coverage where the reviewed product/service falls within the BI consumer-protection perimeter.
-- Added a conditional **AI / GenAI module** using OJK Indonesian Banking AI Governance and NIST AI RMF / GenAI Profile as guidance/benchmarks.
-- Added a **Scoping Wizard** design that resolves conditional controls to `Applicable`, `N/A`, or `Review Scope`.
-- Expanded regulatory traceability with **Legal Criteria / Clause**, **Criteria Summary**, **Criteria Type**, and **Reference Precision**.
-- Added separate **Design Effectiveness** and **Operating Effectiveness** conclusions and internal **Current Capability / Target Capability / Gap** scoring. The internal 1–4 scale is **not** represented as an official NIST CSF Implementation Tier.
-- Added **CISA KEV / exposure / asset-criticality vulnerability prioritization** and **MITRE ATT&CK v19.1 detection coverage**.
-- Added workbook designs for **Evidence Register, Sampling Log, Findings Register, Remediation Tracker, Parameters, Vulnerability Prioritization, and ATT&CK Detection Coverage**.
+The v3.1 duplication review remains valid. No new generic control was added merely to increase coverage. Instead, existing controls are operationalized through dedicated registers and stronger current-framework mappings.
 
-## Duplication / consolidation review
+The 133 controls remain distributed as:
+- Govern: 22
+- Identify: 19
+- Protect: 40
+- Detect: 20
+- Respond: 19
+- Recover: 13
 
-A second overlap review was completed after the v3.1 additions.
+## New v3.2 operational registers
 
-- `RC-13 Recovery Metrics` from v3 was **retired and consolidated into `RC-03 Recovery Performance, RTO/RPO & Metrics`**.
-- No other material duplicate was identified.
-- Similar controls that remain are intentionally separated by control objective, for example:
-  - `DE-04 Detection Use Cases` vs `DE-18 Detection Testing` — design/coverage vs validation.
-  - `ID-17 Fraud-Cyber Scenarios` vs `DE-09 Digital Fraud Monitoring` — risk identification vs continuous detection.
-  - `DE-19 BI-FAST Fraud Detection & Operational Monitoring` vs `DE-09` — BI-FAST-specific mandatory overlay vs enterprise monitoring.
-  - `RS-16 BI KKS Incident Handling` vs `RS-18 BI-FAST Cyber Incident Notification – 1 Hour` — general BI cyber obligations vs BI-FAST-specific notification timeline.
-  - AI controls remain separated into governance, inventory/risk classification, protection, monitoring, and incident response.
+The authoritative v3.2 Excel working paper adds:
+
+- **Regulatory Calendar** — recurring and event-driven OJK/BI obligations, validated deadlines, owners, due dates, status, and submission evidence.
+- **Critical Services Map** — service-centric BIA/resilience mapping across applications, data, identity, network, third parties, cloud, recovery arrangements, tests, and open gaps.
+- **Security Exceptions** — approval, compensating controls, residual risk, finite expiry, aging, validation, and finding/risk linkage.
+- **Technology Lifecycle** — vendor/version inventory, EOS/EOL exposure, exceptions, replacement platform, migration milestone, and validation.
+- **Crypto & PQC Inventory** — protocols, algorithms, keys/certificates, quantum-vulnerable dependencies, crypto-agility readiness, PQC migration priority and roadmap.
+- **Software Supply Chain** — SBOM/SCA coverage, trusted registries, signing, provenance/attestation, build isolation, secrets scanning, dependency controls and exceptions.
+
+The Dashboard adds hardening KPIs for overdue regulatory obligations, expired/expiring exceptions, EOS/EOL technology, untested critical services, urgent PQC migration items, and software-supply-chain gaps.
+
+## Existing controls strengthened in v3.2
+
+No duplicate controls were created. Existing controls were enhanced instead:
+
+- `GV-13 Issue Governance` → Security Exceptions register and expiry governance.
+- `ID-04 Business Service Mapping`, `ID-05 Business Impact Analysis`, `RC-02 DR Site Resilience`, `RC-03 Recovery Performance` → Critical Services Map.
+- `ID-13 Technology Lifecycle` → dedicated EOS/EOL and migration tracker.
+- `ID-18 Emerging & PQC Risk` and `PR-21 Cryptographic Key Management` → crypto inventory, crypto-agility and PQC transition readiness.
+- `PR-05 Multi-Factor Authentication` → current NIST SP 800-63B-4 benchmark mapping.
+- `PR-26 Secure SDLC` and `PR-28 Software Supply Chain` → NIST SSDF v1.1 plus explicit SBOM, signing, provenance and build-pipeline tracking.
+
+## Key regulatory calendar coverage
+
+The workbook includes exact deadlines only where directly validated against official sources, including:
+
+- OJK initial cyber-incident notification: **within 24 hours** after the Bank becomes aware.
+- Complete OJK cyber-incident report: **within 5 working days** after the Bank becomes aware.
+- Scenario-based cyber-test report: **within 10 working days** after testing is completed.
+- Anti-Fraud Strategy implementation report for bank umum: **semiannual**, due no later than the **31st of the following month**.
+- Significant Fraud event report for bank umum: **within 3 working days** after the event becomes known.
+- Change to Anti-Fraud Strategy: **within 7 working days** from the change.
+- Correction/update to Anti-Fraud reports: **within 15 working days** after the error/change becomes known.
+- BI-FAST cyber incident: conditional **1-hour notification** to the Operator under the applicable BI-FAST provision.
+
+Deadlines that depend on changing technical reporting instructions are explicitly marked for revalidation rather than presented as false precision.
 
 ## Repository files
 
-- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — v3.1 control index and current repository source catalogue.
-- `docs/WORKBOOK_v3_1.md` — v3.1 workbook/supervisory-engine sheet design and methodology.
-- `checklist/Cybersecurity_Checklist_Auditee_v3_1.xlsx.sha1` — integrity metadata for the QA-generated v3.1 workbook artifact.
-- `checklist/Cybersecurity_Checklist_Auditee_v3.xlsx` — prior v3 Excel working paper retained for comparison.
-- `docs/REFERENCES.md` — current regulatory/framework map.
-- `docs/CHANGELOG_v3_1.md` — v3 → v3.1 changes and consolidation decisions.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx` — **authoritative v3.2 audit/supervisory working paper**.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — stable 133-control source catalogue retained because v3.2 does not inflate the control set.
+- `docs/WORKBOOK_v3_2.md` — v3.2 workbook structure and usage.
+- `docs/CHANGELOG_v3_2.md` — v3.1 → v3.2 hardening changes and non-duplication decision.
+- `docs/REFERENCES.md` — current Indonesian regulatory and international framework reference map.
 - `archive/v2/` — historical v2 artifacts.
-
-The QA-generated v3.1 Excel workbook is distributed as an accompanying artifact. Its workbook structure and binary integrity metadata are documented in the repository so the generated file can be validated against the reviewed control catalogue.
 
 ## Recommended workflow
 
-1. Complete the **Scoping Wizard** and retain evidence supporting the regulatory/applicability determination.
-2. Filter the checklist to applicable controls.
-3. Obtain and register evidence.
-4. Perform the specified testing and record sampling where relevant.
-5. Assess **design** and **operating effectiveness** separately.
-6. Record the control result and capability gap.
-7. Raise findings only after validating the applicable legal/supervisory criteria.
-8. Track remediation and independent closure validation.
-9. Use the Vulnerability Prioritization and ATT&CK sheets for threat-led technical testing.
+1. Complete the **Scoping Wizard**.
+2. Map **critical business services** and dependencies before detailed control testing.
+3. Filter to applicable controls and register evidence.
+4. Perform testing/sampling and assess design + operating effectiveness.
+5. Use the regulatory calendar for submission/deadline tracking.
+6. Use Security Exceptions and Technology Lifecycle to challenge temporary risk acceptance and unsupported technology.
+7. Use Crypto & PQC Inventory and Software Supply Chain for forward-looking technical risk.
+8. Raise findings only after validating exact applicable legal/supervisory criteria.
+9. Track remediation and independent closure validation.
 
 ## Important legal / regulatory note
 
-This repository is an audit and supervisory aid, not a substitute for the official regulation text or entity-specific legal interpretation. A `Section-level / control mapping` must not be quoted as an exact legal clause without revalidation. Always verify effective dates, scope, amendments, transition rules, exemptions, and current reporting channels before formal sign-off.
+This repository is an audit and supervisory aid, not a substitute for the official regulation text or entity-specific legal interpretation. Section-level/control mappings must not be quoted as exact legal clauses without revalidation. Always verify effective dates, scope, amendments, transition rules, exemptions, holidays affecting working-day calculations, and current reporting channels before formal sign-off.
