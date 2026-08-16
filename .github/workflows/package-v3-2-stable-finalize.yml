@@ -1,0 +1,185 @@
+name: Finalize v3.2 stable packaging branch
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/package-v3-2-stable-finalize.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for verified workbook
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected="cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e"
+          for attempt in $(seq 1 30); do
+            rm -f /tmp/v32.xlsx
+            if gh api "/repos/${GITHUB_REPOSITORY}/contents/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx?ref=agent/package-v3-2-stable-final" \
+              -H 'Accept: application/vnd.github.raw' > /tmp/v32.xlsx 2>/dev/null; then
+              actual="$(sha256sum /tmp/v32.xlsx | awk '{print $1}')"
+              size="$(stat -c%s /tmp/v32.xlsx)"
+              if [ "${actual}" = "${expected}" ] && [ "${size}" = "116769" ]; then
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "Verified workbook not available; refusing finalization." >&2
+          exit 1
+
+      - name: Checkout packaging branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/package-v3-2-stable-final
+          fetch-depth: 0
+
+      - name: Finalize stable repository layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p archive/v3 archive/v3.1 checklist docs
+
+          if [ -f checklist/Cybersecurity_Checklist_Auditee_v3.md ]; then
+            git mv checklist/Cybersecurity_Checklist_Auditee_v3.md archive/v3/Cybersecurity_Checklist_Auditee_v3.md
+          fi
+          if [ -f checklist/Cybersecurity_Checklist_Auditee_v3.xlsx ]; then
+            git mv checklist/Cybersecurity_Checklist_Auditee_v3.xlsx archive/v3/Cybersecurity_Checklist_Auditee_v3.xlsx
+          fi
+
+          if [ -f checklist/Cybersecurity_Checklist_Auditee_v3_1.md ]; then
+            cp checklist/Cybersecurity_Checklist_Auditee_v3_1.md checklist/Cybersecurity_Checklist_Auditee_v3_2.md
+            python - <<'PY'
+          from pathlib import Path
+          p=Path('checklist/Cybersecurity_Checklist_Auditee_v3_2.md')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('Cybersecurity Checklist for Auditee — v3.1','Cybersecurity Checklist for Auditee — v3.2',1)
+          s=s.replace('Cybersecurity Checklist for Auditee (v3.1)','Cybersecurity Checklist for Auditee (v3.2)',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+            git mv checklist/Cybersecurity_Checklist_Auditee_v3_1.md archive/v3.1/Cybersecurity_Checklist_Auditee_v3_1.md
+          fi
+          if [ -f checklist/Cybersecurity_Checklist_Auditee_v3_1.xlsx.sha1 ]; then
+            git mv checklist/Cybersecurity_Checklist_Auditee_v3_1.xlsx.sha1 archive/v3.1/Cybersecurity_Checklist_Auditee_v3_1.xlsx.sha1
+          fi
+
+          cat > README.md <<'EOF'
+          # Cybersecurity Checklist for Auditee — v3.2.0 Stable
+
+          **Regulatory baseline reviewed as of 16 August 2026.**
+
+          This repository provides an audit and supervisory working-paper toolkit for commercial-bank cybersecurity, technology risk, fraud, operational resilience, and applicable payment-system reviews.
+
+          ## Stable release
+
+          The current stable baseline is **v3.2.0**.
+
+          - `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx` — authoritative Excel working paper.
+          - `checklist/Cybersecurity_Checklist_Auditee_v3_2.md` — GitHub-readable control index.
+          - `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx.sha256` — workbook integrity metadata.
+          - `docs/REFERENCES.md` — regulatory and framework reference map.
+          - `docs/CHANGELOG_v3_2.md` — v3.2 operational-hardening changes.
+          - `docs/WORKBOOK_v3_2.md` — workbook methodology and sheet structure.
+
+          Historical v2, v3, and v3.1 artifacts are retained under `archive/` where available.
+
+          ## Control architecture
+
+          v3.2 retains **133 active controls** structured around NIST CSF 2.0:
+
+          - Govern: 22
+          - Identify: 19
+          - Protect: 40
+          - Detect: 20
+          - Respond: 19
+          - Recover: 13
+
+          The toolkit also includes scoping and applicability logic, design/operating-effectiveness assessment, capability gaps, evidence and sampling registers, finding/remediation tracking, regulatory deadlines, critical-service dependency mapping, security-exception aging, EOS/EOL tracking, threat-led vulnerability prioritization, ATT&CK detection coverage, crypto/PQC readiness, and software-supply-chain evidence.
+
+          ## Workbook integrity
+
+          Expected SHA-256 for the stable v3.2 workbook:
+
+          `cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e`
+
+          Expected size: **116,769 bytes**.
+
+          ## Intended workflow
+
+          1. Determine the auditee and regulatory perimeter in the Scoping Wizard.
+          2. Filter to applicable controls and request the specified evidence.
+          3. Perform audit/test procedures, including sampling and reperformance where relevant.
+          4. Assess design effectiveness and operating effectiveness separately.
+          5. Record control conclusions, evidence IDs, capability gaps, and findings.
+          6. Track remediation and independent closure validation.
+          7. Revalidate regulatory references before formal supervisory/audit sign-off.
+
+          ## Important note
+
+          This repository is an audit/supervisory aid and does not replace official laws, OJK/BI regulations, implementing provisions, or entity-specific legal interpretation. Section-level control mappings must be revalidated against the exact operative provision before being cited as a formal regulatory breach.
+          EOF
+
+          # Remove indentation introduced by the YAML block.
+          sed -i 's/^          //' README.md
+
+          cat > docs/RELEASE_NOTES_v3_2_0.md <<'EOF'
+          # Release Notes — v3.2.0 Stable
+
+          Released as the stable baseline for the Cybersecurity Checklist for Auditee.
+
+          ## Highlights
+
+          - 133 active controls under NIST CSF 2.0.
+          - OJK/BI regulatory mapping reviewed through 16 August 2026.
+          - Anti-Fraud and conditional BI/BI-FAST overlays.
+          - Conditional AI/GenAI governance and security module.
+          - Scoping Wizard, evidence/sampling/findings/remediation registers.
+          - Regulatory Calendar and critical-service dependency mapping.
+          - Security-exception, technology lifecycle, crypto/PQC, and software-supply-chain registers.
+          - Threat-led vulnerability prioritization using KEV/exposure/criticality.
+          - MITRE ATT&CK detection-coverage support.
+
+          ## Stable workbook
+
+          `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx`
+
+          SHA-256: `cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e`
+
+          Size: 116,769 bytes.
+          EOF
+          sed -i 's/^          //' docs/RELEASE_NOTES_v3_2_0.md
+
+          actual="$(sha256sum checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx | awk '{print $1}')"
+          test "${actual}" = "cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e"
+          test "$(stat -c%s checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx)" = "116769"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize v3.2.0 stable packaging"
+          git push origin HEAD:agent/package-v3-2-stable-final
+
+      - name: Remove this temporary workflow from master
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin master
+          git checkout -B cleanup-master origin/master
+          rm -f .github/workflows/package-v3-2-stable-finalize.yml
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Remove v3.2 finalizer workflow"
+            git push origin HEAD:master
+          fi
