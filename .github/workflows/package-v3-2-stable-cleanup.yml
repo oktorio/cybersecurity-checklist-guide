@@ -1,0 +1,58 @@
+name: Cleanup v3.2 packaging workflows
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/package-v3-2-stable-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for verified workbook on packaging branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected="cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e"
+          for attempt in $(seq 1 30); do
+            rm -f /tmp/v32.xlsx
+            if gh api "/repos/${GITHUB_REPOSITORY}/contents/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx?ref=agent/package-v3-2-stable-final" \
+              -H 'Accept: application/vnd.github.raw' > /tmp/v32.xlsx 2>/dev/null; then
+              actual="$(sha256sum /tmp/v32.xlsx | awk '{print $1}')"
+              size="$(stat -c%s /tmp/v32.xlsx)"
+              if [ "${actual}" = "${expected}" ] && [ "${size}" = "116769" ]; then
+                echo "Verified workbook is present on packaging branch."
+                exit 0
+              fi
+            fi
+            echo "Workbook not ready yet (attempt ${attempt}/30)."
+            sleep 10
+          done
+          echo "Verified workbook did not appear; refusing cleanup." >&2
+          exit 1
+
+      - name: Checkout master and remove temporary workflows
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Clean temporary release automation
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/package-v3-2-stable.yml
+          rm -f .github/workflows/package-v3-2-stable-autopack.yml
+          rm -f .github/workflows/package-v3-2-stable-cleanup.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Remove temporary v3.2 packaging workflows"
+          git push origin HEAD:master
