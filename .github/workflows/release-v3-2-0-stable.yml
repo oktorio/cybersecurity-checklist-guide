@@ -1,0 +1,141 @@
+name: Publish v3.2.0 stable release
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/release-v3-2-0-stable.yml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_BRANCH: agent/package-v3-2-stable-final
+      EXPECTED_SHA256: cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e
+      EXPECTED_SIZE: '116769'
+    steps:
+      - name: Wait for finalized packaging branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 36); do
+            rm -rf /tmp/package-check && mkdir -p /tmp/package-check
+            if git clone --quiet --depth 1 --branch "${RELEASE_BRANCH}" "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/package-check 2>/dev/null; then
+              f=/tmp/package-check/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx
+              if [ -f "$f" ] && [ -f /tmp/package-check/docs/RELEASE_NOTES_v3_2_0.md ] && grep -q 'v3.2.0 Stable' /tmp/package-check/README.md; then
+                actual="$(sha256sum "$f" | awk '{print $1}')"
+                size="$(stat -c%s "$f")"
+                if [ "$actual" = "$EXPECTED_SHA256" ] && [ "$size" = "$EXPECTED_SIZE" ] && [ ! -d /tmp/package-check/.release ]; then
+                  echo "Packaging branch is finalized and verified."
+                  exit 0
+                fi
+              fi
+            fi
+            echo "Finalized package not ready (attempt ${attempt}/36)."
+            sleep 10
+          done
+          echo "Timed out waiting for verified final packaging branch." >&2
+          exit 1
+
+      - name: Locate and merge packaging pull request
+        shell: bash
+        run: |
+          set -euo pipefail
+          pr="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$RELEASE_BRANCH" --base master --state open --json number --jq '.[0].number')"
+          test -n "$pr"
+          head_sha="$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" --json headRefOid --jq .headRefOid)"
+          gh pr ready "$pr" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || true
+          gh pr merge "$pr" --repo "$GITHUB_REPOSITORY" --merge --match-head-commit "$head_sha"
+          echo "Merged PR #${pr} at packaging head ${head_sha}."
+
+      - name: Wait for merged content on master
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 18); do
+            rm -rf /tmp/master-check
+            if git clone --quiet --depth 1 --branch master "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/master-check 2>/dev/null; then
+              f=/tmp/master-check/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx
+              if [ -f "$f" ]; then
+                actual="$(sha256sum "$f" | awk '{print $1}')"
+                size="$(stat -c%s "$f")"
+                if [ "$actual" = "$EXPECTED_SHA256" ] && [ "$size" = "$EXPECTED_SIZE" ]; then
+                  exit 0
+                fi
+              fi
+            fi
+            sleep 5
+          done
+          echo "Merged workbook not verified on master." >&2
+          exit 1
+
+      - name: Remove all temporary packaging workflows from master
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/release-clean
+          git clone --quiet --branch master "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/release-clean
+          cd /tmp/release-clean
+          rm -f .github/workflows/package-v3-2-stable.yml
+          rm -f .github/workflows/package-v3-2-stable-autopack.yml
+          rm -f .github/workflows/package-v3-2-stable-cleanup.yml
+          rm -f .github/workflows/package-v3-2-stable-finalize.yml
+          rm -f .github/workflows/release-v3-2-0-stable.yml
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Remove temporary v3.2 release workflows"
+            for attempt in 1 2 3; do
+              if git push origin HEAD:master; then
+                break
+              fi
+              git pull --rebase origin master
+              if [ "$attempt" = 3 ]; then exit 1; fi
+            done
+          fi
+
+      - name: Verify clean stable master
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/stable-master
+          git clone --quiet --depth 1 --branch master "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/stable-master
+          cd /tmp/stable-master
+          f=checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx
+          test -f "$f"
+          test "$(sha256sum "$f" | awk '{print $1}')" = "$EXPECTED_SHA256"
+          test "$(stat -c%s "$f")" = "$EXPECTED_SIZE"
+          test -f checklist/Cybersecurity_Checklist_Auditee_v3_2.md
+          test -f docs/RELEASE_NOTES_v3_2_0.md
+          test ! -f checklist/Cybersecurity_Checklist_Auditee_v3.xlsx
+          test ! -f checklist/Cybersecurity_Checklist_Auditee_v3_1.md
+          test ! -e .release
+          if find .github/workflows -maxdepth 1 -type f \( -name '*v3-2*' -o -name 'release-v3-2-0-stable.yml' \) 2>/dev/null | grep -q .; then
+            echo "Temporary release workflow remains." >&2
+            exit 1
+          fi
+
+      - name: Publish stable GitHub Release and attach workbook
+        shell: bash
+        working-directory: /tmp/stable-master
+        run: |
+          set -euo pipefail
+          if gh release view v3.2.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release v3.2.0 already exists; refusing to overwrite silently." >&2
+            exit 1
+          fi
+          gh release create v3.2.0 \
+            checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx \
+            --repo "$GITHUB_REPOSITORY" \
+            --target master \
+            --title "Cybersecurity Checklist for Auditee v3.2.0" \
+            --notes-file docs/RELEASE_NOTES_v3_2_0.md \
+            --latest
+          gh release view v3.2.0 --repo "$GITHUB_REPOSITORY" --json tagName,isDraft,isPrerelease,url
