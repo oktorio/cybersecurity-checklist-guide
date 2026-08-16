@@ -11,14 +11,11 @@ Version 3.1 evolves the v3 audit working paper into a more complete **cybersecur
 - Updated the **BI-FAST regulatory chain** to PADG 17/2023 as amended by PADG 1/2025, PADG 14/2025, and PADG 3/2026.
 - Added conditional **PBI No. 6 Tahun 2026 — Pelindungan Konsumen Bank Indonesia** coverage where the reviewed product/service falls within the BI consumer-protection perimeter.
 - Added a conditional **AI / GenAI module** using OJK Indonesian Banking AI Governance and NIST AI RMF / GenAI Profile as guidance/benchmarks.
-- Added a **Scoping Wizard** that resolves conditional controls to `Applicable`, `N/A`, or `Review Scope`.
+- Added a **Scoping Wizard** design that resolves conditional controls to `Applicable`, `N/A`, or `Review Scope`.
 - Expanded regulatory traceability with **Legal Criteria / Clause**, **Criteria Summary**, **Criteria Type**, and **Reference Precision**.
-- Added separate **Design Effectiveness** and **Operating Effectiveness** conclusions.
-- Added internal **Current Capability / Target Capability / Gap** scoring. This internal 1–4 scale is **not** represented as an official NIST CSF Implementation Tier.
-- Added **CISA KEV / exposure / asset-criticality vulnerability prioritization**.
-- Added **MITRE ATT&CK v19.1 detection coverage** and testing support.
-- Added **Evidence Register, Sampling Log, Findings Register, and Remediation Tracker**.
-- Added configurable **Parameters** so vulnerability-priority thresholds and weights are transparent rather than embedded as unexplained constants.
+- Added separate **Design Effectiveness** and **Operating Effectiveness** conclusions and internal **Current Capability / Target Capability / Gap** scoring. The internal 1–4 scale is **not** represented as an official NIST CSF Implementation Tier.
+- Added **CISA KEV / exposure / asset-criticality vulnerability prioritization** and **MITRE ATT&CK v19.1 detection coverage**.
+- Added workbook designs for **Evidence Register, Sampling Log, Findings Register, Remediation Tracker, Parameters, Vulnerability Prioritization, and ATT&CK Detection Coverage**.
 
 ## Duplication / consolidation review
 
@@ -31,16 +28,19 @@ A second overlap review was completed after the v3.1 additions.
   - `ID-17 Fraud-Cyber Scenarios` vs `DE-09 Digital Fraud Monitoring` — risk identification vs continuous detection.
   - `DE-19 BI-FAST Fraud Detection & Operational Monitoring` vs `DE-09` — BI-FAST-specific mandatory overlay vs enterprise monitoring.
   - `RS-16 BI KKS Incident Handling` vs `RS-18 BI-FAST Cyber Incident Notification – 1 Hour` — general BI cyber obligations vs BI-FAST-specific notification timeline.
-  - AI controls are separated into governance, inventory/risk classification, protection, monitoring, and incident response.
+  - AI controls remain separated into governance, inventory/risk classification, protection, monitoring, and incident response.
 
-## Files
+## Repository files
 
-- `checklist/Cybersecurity_Checklist_Auditee_v3_1.xlsx` — **authoritative v3.1 working paper**.
-- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — GitHub-readable v3.1 control index.
-- `checklist/Cybersecurity_Checklist_Auditee_v3.xlsx` — prior v3 release retained for comparison.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — v3.1 control index and current repository source catalogue.
+- `docs/WORKBOOK_v3_1.md` — v3.1 workbook/supervisory-engine sheet design and methodology.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_1.xlsx.sha1` — integrity metadata for the QA-generated v3.1 workbook artifact.
+- `checklist/Cybersecurity_Checklist_Auditee_v3.xlsx` — prior v3 Excel working paper retained for comparison.
 - `docs/REFERENCES.md` — current regulatory/framework map.
 - `docs/CHANGELOG_v3_1.md` — v3 → v3.1 changes and consolidation decisions.
 - `archive/v2/` — historical v2 artifacts.
+
+The QA-generated v3.1 Excel workbook is distributed as an accompanying artifact. Its workbook structure and binary integrity metadata are documented in the repository so the generated file can be validated against the reviewed control catalogue.
 
 ## Recommended workflow
 
@@ -56,4 +56,4 @@ A second overlap review was completed after the v3.1 additions.
 
 ## Important legal / regulatory note
 
-This repository is an audit and supervisory aid, not a substitute for the official regulation text or entity-specific legal interpretation. A `Section-level / control mapping` in the workbook must not be quoted as an exact legal clause without revalidation. Always verify effective dates, scope, amendments, transition rules, exemptions, and current reporting channels before formal sign-off.
+This repository is an audit and supervisory aid, not a substitute for the official regulation text or entity-specific legal interpretation. A `Section-level / control mapping` must not be quoted as an exact legal clause without revalidation. Always verify effective dates, scope, amendments, transition rules, exemptions, and current reporting channels before formal sign-off.
