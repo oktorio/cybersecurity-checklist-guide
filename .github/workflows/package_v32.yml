@@ -1,0 +1,44 @@
+name: Package v3.2 workbook
+
+on:
+  push:
+    branches:
+      - agent/fix-v3-2-checklist-files
+    paths:
+      - '.release/v32json/part10.json'
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/fix-v3-2-checklist-files
+          fetch-depth: 0
+      - name: Reconstruct and verify workbook
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .release/v32xz/part01.b64 .release/v32xz/part02.b64 .release/v32xz/part03.b64 .release/v32xz/part04.b64 .release/v32xz/part05a.b64 .release/v32xz/part05b.b64 .release/v32xz/part06a.b64 > /tmp/v32.all.b64
+          for f in .release/v32json/part06b.json .release/v32json/part07a.json .release/v32json/part07b.json .release/v32json/part08.json .release/v32json/part09.json .release/v32json/part10.json; do
+            jq -r '.data' "$f" >> /tmp/v32.all.b64
+          done
+          tr -d '\n\r ' < /tmp/v32.all.b64 | base64 -d > /tmp/v32.xlsx.xz
+          echo "79aade4582da556c0a107fd7880b54680ae024b855e8132f173b162da15ed6cf  /tmp/v32.xlsx.xz" | sha256sum -c -
+          xz -dc /tmp/v32.xlsx.xz > checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx
+          test "$(stat -c%s checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx)" = "178836"
+          echo "cdb5622212cef14dfdb33d17b4557368f20af1a7e7fc19d6c3c41ae72549c63e  checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx" | sha256sum -c -
+      - name: Commit verified workbook and clean packaging files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .release/v32xz .release/v32json
+          rm -f .github/workflows/package_v32.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add verified v3.2 checklist workbook"
+          git push origin HEAD:agent/fix-v3-2-checklist-files
