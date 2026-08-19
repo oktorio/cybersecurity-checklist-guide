@@ -5,7 +5,7 @@ on:
     branches:
       - agent/fix-v3-2-checklist-files
     paths:
-      - '.release/v32xz/part10.b64'
+      - '.release/v32xz/part10b.b64'
 
 permissions:
   contents: write
