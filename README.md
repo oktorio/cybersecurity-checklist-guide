@@ -8,7 +8,7 @@ Version 3.2 is an **operational-hardening release** of the v3.1 supervisory engi
 
 To avoid confusion, use these as the **current stable checklist files**:
 
-- **[Download the latest Excel checklist — Cybersecurity_Checklist_Auditee_v3_2.xlsx](checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx)** — authoritative audit / supervisory working paper.
+- **[Download the latest Excel checklist — Cybersecurity_Checklist_Auditee_v3_2.xlsx](https://raw.githubusercontent.com/oktorio/cybersecurity-checklist-guide/master/checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx)** — authoritative audit / supervisory working paper.
 - **[Open the latest GitHub-readable checklist — Cybersecurity_Checklist_Auditee_v3_2.md](checklist/Cybersecurity_Checklist_Auditee_v3_2.md)** — readable control index for browsing on GitHub.
 - **[Current regulatory & framework references](docs/REFERENCES.md)** — OJK, BI, NIST, CIS, MITRE ATT&CK, and other mapped references.
 
