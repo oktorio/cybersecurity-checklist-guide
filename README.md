@@ -4,6 +4,16 @@
 
 Version 3.2 is an **operational-hardening release** of the v3.1 supervisory engine. It deliberately keeps the **133 active-control catalogue** stable and improves how the controls are scoped, evidenced, monitored, and followed through during real audit/supervisory fieldwork.
 
+## Start here — Latest Checklist
+
+To avoid confusion, use these as the **current stable checklist files**:
+
+- **[Download the latest Excel checklist — Cybersecurity_Checklist_Auditee_v3_2.xlsx](checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx)** — authoritative audit / supervisory working paper.
+- **[Open the latest GitHub-readable checklist — Cybersecurity_Checklist_Auditee_v3_2.md](checklist/Cybersecurity_Checklist_Auditee_v3_2.md)** — readable control index for browsing on GitHub.
+- **[Current regulatory & framework references](docs/REFERENCES.md)** — OJK, BI, NIST, CIS, MITRE ATT&CK, and other mapped references.
+
+> **If you only need one file, start with the Excel workbook above.** Older versions are retained only for historical comparison.
+
 ## v3.2 principle: deepen, do not duplicate
 
 The v3.1 duplication review remains valid. No new generic control was added merely to increase coverage. Instead, existing controls are operationalized through dedicated registers and stronger current-framework mappings.
@@ -57,26 +67,26 @@ Deadlines that depend on changing technical reporting instructions are explicitl
 
 ## Repository files
 
-- `checklist/Cybersecurity_Checklist_Auditee_v3_1.md` — stable 133-control source catalogue; v3.2 deliberately does not inflate the control set.
-- `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx.sha256` — integrity metadata for the QA-generated v3.2 workbook artifact.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx` — **latest authoritative v3.2 Excel working paper**.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_2.md` — **latest GitHub-readable v3.2 control index**.
+- `checklist/Cybersecurity_Checklist_Auditee_v3_2.xlsx.sha256` — integrity metadata for the v3.2 workbook.
 - `docs/WORKBOOK_v3_2.md` — v3.2 workbook structure and usage.
 - `docs/CHANGELOG_v3_2.md` — v3.1 → v3.2 hardening changes and non-duplication decision.
 - `docs/REFERENCES.md` — current Indonesian regulatory and international framework reference map.
-- `archive/v2/` — historical v2 artifacts.
-
-The QA-generated v3.2 Excel workbook is delivered as an accompanying artifact. The repository tracks its reviewed methodology and cryptographic hash so the binary can be validated without implying that a different workbook is the current release.
+- `archive/` — historical checklist versions and artifacts.
 
 ## Recommended workflow
 
-1. Complete the **Scoping Wizard**.
-2. Map **critical business services** and dependencies before detailed control testing.
-3. Filter to applicable controls and register evidence.
-4. Perform testing/sampling and assess design + operating effectiveness.
-5. Use the regulatory calendar for submission/deadline tracking.
-6. Use Security Exceptions and Technology Lifecycle to challenge temporary risk acceptance and unsupported technology.
-7. Use Crypto & PQC Inventory and Software Supply Chain for forward-looking technical risk.
-8. Raise findings only after validating exact applicable legal/supervisory criteria.
-9. Track remediation and independent closure validation.
+1. Open the **latest Excel checklist** from the link at the top of this README.
+2. Complete the **Scoping Wizard**.
+3. Map **critical business services** and dependencies before detailed control testing.
+4. Filter to applicable controls and register evidence.
+5. Perform testing/sampling and assess design + operating effectiveness.
+6. Use the regulatory calendar for submission/deadline tracking.
+7. Use Security Exceptions and Technology Lifecycle to challenge temporary risk acceptance and unsupported technology.
+8. Use Crypto & PQC Inventory and Software Supply Chain for forward-looking technical risk.
+9. Raise findings only after validating exact applicable legal/supervisory criteria.
+10. Track remediation and independent closure validation.
 
 ## Important legal / regulatory note
 
